@@ -1,5 +1,7 @@
 # 说明:
 ## 一、使用方法
+* 修改auto_testing_excel目录中的case.xlsx的用例
+* 修改auto_testing_excel目录中的config.py的相关配置
 * 安装xlrd/xlwt/requests 
 * python \*/auto_testing_excel/test_main.py > myreport.html
 
