@@ -1,0 +1,4 @@
+requests==2.12.4
+xlrd==1.0.0
+xlutils==2.0.0
+xlwt==1.1.2
