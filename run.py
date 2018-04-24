@@ -6,10 +6,10 @@ import requests
 import json
 import re 
 
-import config
-from config import logger,fail_logger
-from automatic_testing.common import HTMLTestRunner 
-from automatic_testing.common.excelTools.excelOperator import ExcelTool 
+import config.config
+from config.config import logger,fail_logger
+from common import HTMLTestRunner
+from common.excelTools.excelOperator import ExcelTool
 
 def test(request_s,case):
     def doTest():
@@ -19,7 +19,7 @@ def test(request_s,case):
         method=case['method']
         headers=case['headers']
         if(headers is not None and headers.strip()!=''):
-            print 'headers::::::',headers
+            logger.info('case:'+str(uId)+',headers '+headers)
             headers=json.loads(headers)
         param=case['param']
         if(param is not None and param.strip()!=''):
@@ -48,7 +48,7 @@ def test(request_s,case):
                 raise ValueError('[the method \''+method+'\' is not support!]') 
         #assert
         if(r is not None):
-                if(assertTools.assertEqual(expect.strip(),r.text.decode('unicode-escape').strip())):
+                if(AssertTools.assertEqual(expect.strip(),r.text.decode('unicode-escape').strip())):
                     logger.info('case:'+str(uId)+',success##status_code:'+str(r.status_code)+'##'+expect.strip()+' equal '+r.text.decode('unicode-escape').strip())
                 else:
                     logger.error('case:'+str(uId)+',fail##status_code:'+str(r.status_code)+'##'+expect.strip()+' not equal '+r.text.decode('unicode-escape').strip())
@@ -59,27 +59,33 @@ def test(request_s,case):
             fail_logger.error('case:'+str(uId)+',fail##request response None')
     return doTest
 
-class assertTools():
+class AssertTools():
     @staticmethod
     def assertEqual(regular,source):
-        regular=regular.replace('[','\[')
-        regular=regular.replace(']','\]')
-        regular=regular.replace('*','\*')
-        pattern=re.compile(regular)
-        if(pattern.match(source)):
-            return True 
+        if(regular=='' or regular is None):
+            if(regular==source):
+                return True
+            return False
+        else:
+            regular=regular.replace('[','\[')
+            regular=regular.replace(']','\]')
+            regular=regular.replace('*','\*')
+            pattern=re.compile(regular)
+            if(pattern.match(source)):
+                return True 
 
 class Test(unittest.TestCase):
     @classmethod
     def init(self):
         logger.info('init')
         logger.info('clean logs')
-        status,output=commands.getstatusoutput('>'+config.log_file)
-        status,output=commands.getstatusoutput('>'+config.fail_log_file)
+        status,output=commands.getstatusoutput('>' + config.config.log_file)
+        status,output=commands.getstatusoutput('>' + config.config.fail_log_file)
         logger.info('read case from excel')
         excelTool=ExcelTool()
-        self.cases=excelTool.readAsDictArray(config.excel_file,config.test_sheet_num)
-        if(config.use_session):
+        self.cases=excelTool.readAsDictArray(config.config.excel_file,
+                                             config.config.test_sheet_num)
+        if(config.config.use_session):
             self.s=requests.Session()
         else:
             self.s=None
@@ -96,5 +102,5 @@ class Test(unittest.TestCase):
 
 if __name__=='__main__':
     Test.init()    
-    #HTMLTestRunner.main()
+    HTMLTestRunner.main()
     unittest.main()
