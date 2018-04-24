@@ -10,7 +10,7 @@
 
 ## 三、使用的软件
 * unittest    单元测试
-* HTMLTestRunner 0.8.2    将unittest结果生成html
-* requests 2.12.4    http请求
-* xlrd 1.0.0    读excel
-* xlwt 1.1.2    写excel
+* HTMLTestRunner=0.8.2    将unittest结果生成html
+* requests=2.12.4    http请求
+* xlrd=1.0.0    读excel
+* xlwt=1.1.2    写excel
