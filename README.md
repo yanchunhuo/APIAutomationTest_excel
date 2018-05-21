@@ -18,5 +18,5 @@
 * 代码编写全部统一在Linux环境下进行 
 * 文件编码统一使用"-\*- coding:utf-8 -\*-"
 
-## 五、打赏]
+## 五、打赏
 ![avatar](https://github.com/yanchunhuo/resources/blob/master/Alipay.jpg)
