@@ -12,6 +12,3 @@ def log(func):
         print '结束执行函数'
     return wrapper
 
-
-if __name__=='__main__':
-    print "手术室"
